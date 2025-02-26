@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="SDR.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SDR"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="SDR">
+    <Grid DataContext="{Binding DataViewModel, Source={StaticResource Locator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Spacing="4">
+            <Button Command="{Binding StartCommand}"
+                    Content="Start"/>
+            <Button Command="{Binding StopCommand}"
+                    Content="Stop"/>
+        </StackPanel>
+    </Grid>
+</Window>
