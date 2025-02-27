@@ -7,20 +7,20 @@ namespace SDR.Services;
 
 public class RandomSignalDataProvider : IRandomSignalDataProvider
 {
-    private readonly (byte min, byte max) frequencyRange;
-    private readonly (sbyte min, sbyte max) strengthRange;
+    private readonly (float min, float max) frequencyRange;
+    private readonly (float min, float max) strengthRange;
     private readonly int count;
     private readonly Random random;
     private readonly Timer timer;
 
-    public RandomSignalDataProvider((byte min, byte max) frequencyRange, (sbyte min, sbyte max) strengthRange, int count, int frequency)
+    public RandomSignalDataProvider((float min, float max) frequencyRange, (float min, float max) strengthRange, int count, int frequency)
     {
         this.frequencyRange = frequencyRange;
         this.strengthRange = strengthRange;
         this.count = count;
         this.random = new Random();
 
-        timer = new Timer(TimeSpan.FromSeconds(frequency / 1d));
+        timer = new Timer(TimeSpan.FromSeconds(1f / frequency));
         timer.Elapsed += OnTimerElapsed;
         timer.Start();
     }
@@ -29,9 +29,13 @@ public class RandomSignalDataProvider : IRandomSignalDataProvider
 
     private void OnTimerElapsed(object sender, ElapsedEventArgs e)
     {
+        var currentFrequency = frequencyRange.min;
+        var frequencyStep = (frequencyRange.max - frequencyRange.min) / count;
         for (int i = 0; i < count; i++)
         {
-            SignalReceived?.Invoke(new Signal((byte)random.Next(frequencyRange.min, frequencyRange.max), (sbyte)random.Next(strengthRange.min, strengthRange.max)));
+            var signal = new Signal(currentFrequency, random.Next((int)strengthRange.min, (int)strengthRange.max) + random.NextSingle());
+            SignalReceived?.Invoke(signal);
+            currentFrequency += frequencyStep;
         }
     }
 
