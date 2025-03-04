@@ -16,7 +16,7 @@ public partial class App
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddServices(configuration)
-            .AddViewModels()
+            .AddViewModels(configuration)
             .BuildServiceProvider());
         return Ioc.Default;
     }

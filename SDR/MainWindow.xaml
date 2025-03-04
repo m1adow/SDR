@@ -28,6 +28,13 @@
         </StackPanel>
         <controls:Spectrogram Grid.Row="2"
                               Background="Black"
-                              Foreground="White"/>
+                              Foreground="White"
+                              XMin="90.0"
+                              XMax="110.0"
+                              YMin="-120.0"
+                              YMax="-20.0"
+                              XLabel="Frequency"
+                              YLabel="Strenght"
+                              Data="{Binding Signals}"/>
     </Grid>
 </Window>

@@ -2,12 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SDR"
-    xmlns:controls="using:SDR.Controls">
+    xmlns:controls="using:SDR.Controls"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
     <Style TargetType="controls:Spectrogram">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Spectrogram">
-                    <Canvas x:Name="PlotCanvas"/>
+                    <canvas:CanvasControl x:Name="PlotControl"
+                                          Canvas.ZIndex="0"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -20,6 +20,6 @@ public static class ServicesRegistration
                 dataProviderConfiguration.Frequency);
         });
 
-    public static IServiceCollection AddViewModels(this IServiceCollection serviceCollection)
-        => serviceCollection.AddSingleton<DataViewModel>();
+    public static IServiceCollection AddViewModels(this IServiceCollection serviceCollection, IConfiguration configuration)
+        => serviceCollection.AddSingleton(p => new DataViewModel(p.GetRequiredService<ISignalDataProvider>(), configuration.GetValue<int>("DataProviders:Random:Count")));
 }

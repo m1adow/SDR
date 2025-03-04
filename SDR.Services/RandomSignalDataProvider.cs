@@ -22,7 +22,6 @@ public class RandomSignalDataProvider : IRandomSignalDataProvider
 
         timer = new Timer(TimeSpan.FromSeconds(1f / frequency));
         timer.Elapsed += OnTimerElapsed;
-        timer.Start();
     }
 
     public event Action<Signal>? SignalReceived;
