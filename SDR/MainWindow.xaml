@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<winuiex:WindowEx
+    xmlns:winuiex="using:WinUIEx"
+    x:Class="SDR.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SDR"
+    xmlns:controls="using:SDR.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    IsMinimizable="False"
+    IsMaximizable="False"
+    Title="SDR">
+    <Grid DataContext="{Binding DataViewModel, Source={StaticResource Locator}}"
+          Margin="8,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    Spacing="4">
+            <Button Command="{Binding StartCommand}"
+                    Content="Start"
+                    Style="{ThemeResource AccentButtonStyle}"/>
+            <Button Command="{Binding StopCommand}"
+                    Content="Stop"/>
+        </StackPanel>
+        <controls:Spectrogram Grid.Row="2"
+                              Foreground="White"
+                              XMin="90.0"
+                              XMax="110.0"
+                              YMin="-120.0"
+                              YMax="-20.0"
+                              XLabel="Frequency"
+                              YLabel="Strenght"
+                              Data="{Binding Signals}"/>
+        <controls:Waterfall Grid.Row="3"
+                            Margin="0,8,0,0"
+                            Background="Black"
+                            XMin="90.0"
+                            XMax="110.0"
+                            XLabel="Frequency"
+                            YLabel="Time"
+                            Time="10"
+                            UpdateInterval="0.1"
+                            ValueMin="-120.0"
+                            ValueMax="-20.0"
+                            IsDisplaying="{Binding IsDisplaying}"
+                            Data="{Binding Signals}"/>
+    </Grid>
+</winuiex:WindowEx>

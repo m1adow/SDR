@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SDR (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SDR (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
