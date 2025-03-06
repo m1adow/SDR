@@ -1,31 +1,44 @@
-﻿using System;
+﻿using SDR.Models.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SDR.Models;
 
-public class UniqueReplacementNotifyCollection<TKey, TValue>(int size) : IEnumerable<KeyValuePair<TKey, TValue>>
+public class UniqueReplacementNotifyCollection<T>(int size) : IEnumerable<T> where T : IPoint
 {
-    private readonly Dictionary<TKey, TValue> vectors = new(size);
+    private readonly T[] vectors = new T[size];
+    private int insertIndex = 0;
+    private int actualCount;
 
     public event Action? Updated;
 
-    public int Count => vectors.Count;
+    public int Count => actualCount;
 
-    public KeyValuePair<TKey, TValue> this[int index] => vectors.ElementAt(index); 
+    public T this[int index] => vectors[index];
 
-    public void Add(TKey key, TValue value)
+    public void Add(T value)
     {
-        vectors[key] = value;
+        if (insertIndex >= vectors.Length)
+        {
+            insertIndex = 0;
+        }
+
+        vectors[insertIndex++] = value;
+
+        if (actualCount < vectors.Length)
+        {
+            actualCount++;
+        }
+
         Updated?.Invoke();
     }
 
-    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
-        foreach (var vector in vectors)
+        for (int i = 0; i < actualCount; i++)
         {
-            yield return vector;
+            yield return vectors[i];
         }
     }
 

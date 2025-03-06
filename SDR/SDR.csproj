@@ -48,6 +48,7 @@
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.3.2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
+    <PackageReference Include="WinUIEx" Version="2.5.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SDR.Models\SDR.Models.csproj" />

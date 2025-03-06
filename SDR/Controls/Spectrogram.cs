@@ -5,10 +5,11 @@ using System.Numerics;
 using SDR.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 
 namespace SDR.Controls;
 
-[DependencyProperty<UniqueReplacementNotifyCollection<float, float>>("Data")]
+[DependencyProperty<UniqueReplacementNotifyCollection<Point>>("Data")]
 [DependencyProperty<double>("XMin")]
 [DependencyProperty<double>("XMax")]
 [DependencyProperty<string>("XLabel")]
@@ -36,12 +37,12 @@ public sealed partial class Spectrogram : Control
 
     private void OnSpectrogramUnloaded(object sender, RoutedEventArgs e)
     {
+        Data.Updated -= OnDataUpdated;
         plotControl.RemoveFromVisualTree();
         plotControl = null;
-        Data.Updated -= OnDataUpdated;
     }
 
-    partial void OnDataChanged(UniqueReplacementNotifyCollection<float, float>? oldValue, UniqueReplacementNotifyCollection<float, float>? newValue)
+    partial void OnDataChanged(UniqueReplacementNotifyCollection<Point>? oldValue, UniqueReplacementNotifyCollection<Point?> newValue)
     {
         if (oldValue != null)
         {
@@ -61,17 +62,16 @@ public sealed partial class Spectrogram : Control
     {
         for (int i = 0; i < Data.Count - 1; i++)
         {
-            var color = Colors.White;
             var currentCoordinates = Data[i];
-            var current = new Vector2(currentCoordinates.Key, currentCoordinates.Value);
+            var current = new Vector2(currentCoordinates.X, currentCoordinates.Y);
             var nextCoordinates = Data[i + 1];
-            var next = new Vector2(nextCoordinates.Key, nextCoordinates.Value);
+            var next = new Vector2(nextCoordinates.X, nextCoordinates.Y);
 
             var currentInterpolated = new Vector2(GraphicsTools.Interpolate(current.X, XMin, XMax, sender.Size.Width),
                 (float)sender.Size.Height - GraphicsTools.Interpolate(current.Y, YMin, YMax, sender.Size.Height));
             var nextInterpolated = new Vector2(GraphicsTools.Interpolate(next.X, XMin, XMax, sender.Size.Width),
                 (float)sender.Size.Height - GraphicsTools.Interpolate(next.Y, YMin, YMax, sender.Size.Height));
-            args.DrawingSession.DrawLine(currentInterpolated, nextInterpolated, color);
+            args.DrawingSession.DrawLine(currentInterpolated, nextInterpolated, (Foreground as SolidColorBrush)?.Color ?? Colors.White);
         }
     }
 }
