@@ -30,6 +30,7 @@ public sealed partial class Waterfall : Control
     private Timer updateTimer;
     private float currentTimeline;
     private float maxTime;
+    private bool updateData;
 
     private readonly List<Color> zones = [];
 
@@ -68,6 +69,7 @@ public sealed partial class Waterfall : Control
             currentTimeline += (float)updateTimer.Interval / 1000;
         }
 
+        updateData = true;
         plotControl.Invalidate();
     }
 
@@ -103,15 +105,19 @@ public sealed partial class Waterfall : Control
         args.DrawingSession.Antialiasing = CanvasAntialiasing.Aliased;
 
         var data = Data;
-        foreach (var item in data)
-        {           
-            var color = InterpolateColor(GraphicsTools.Interpolate(item.Y, ValueMin, ValueMax, 1));
-            zones.Add(color);
-        }
-
-        if (zones.Count > maxTime * (float)updateTimer.Interval / 10 * data.Count)
+        if (updateData)
         {
-            zones.RemoveRange(0, data.Count);
+            foreach (var item in data)
+            {
+                var color = InterpolateColor(GraphicsTools.Interpolate(item.Y, ValueMin, ValueMax, 1));
+                zones.Add(color);
+            }
+
+            if (zones.Count > maxTime * (float)updateTimer.Interval / 10 * data.Count)
+            {
+                zones.RemoveRange(0, data.Count);
+            }
+            updateData = false;
         }
 
         var pointWidth = (float)(sender.Size.Width / data.Count);
