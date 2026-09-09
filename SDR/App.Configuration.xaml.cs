@@ -15,8 +15,9 @@ public partial class App
     private static IServiceProvider ConfigureServices(IConfiguration configuration)
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
-            .AddServices(configuration)
-            .AddViewModels(configuration)
+            .ConfigureSettings(configuration)
+            .AddServices()
+            .AddViewModels()
             .BuildServiceProvider());
         return Ioc.Default;
     }
